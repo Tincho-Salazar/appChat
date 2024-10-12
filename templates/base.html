@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>WorkChat</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='img/workchat_favicon.png') }}" type="image/png">
+
+    <!-- Bootstrap CSS (offline) -->
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='bootstrap-icons/font/bootstrap-icons.min.css') }}" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link href="{{ url_for('static', filename='fontawesome/css/all.min.css') }}" rel="stylesheet" />
+
+    {% block style %}
+    {% endblock %}
+</head>
+
+<body>
+
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+        <footer class="footer py-3 bg-dark" style="position: fixed; bottom: 0; width: 100%;">
+            <div class="container">
+                <span class="text-muted">&copy; 2024 Sistemas Pindo. Todos los derechos reservados.</span>
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- Bootstrap JS (offline) -->
+    <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <!-- Custom JS -->
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+
+</html>
