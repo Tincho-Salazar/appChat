@@ -1,0 +1,540 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* background-color: #f0f0f0;
+        margin: 10px;
+        padding: 5px; */
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+        margin-top: 1.5rem;
+
+    }
+
+    .sidebar {
+        width: 35%;
+        height: 100vh;
+        background-color: #fff;
+        border-right: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar-header {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .sidebar-header img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .sideba-searchr {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .sidebar-search input {
+        width: 100%;
+        padding: 5px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+    }
+
+    .chat-list {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .chat-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        /* border-bottom: 1px solid #ddd; */
+        cursor: pointer;
+
+    }
+
+    .chat-item:hover {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        border: 2px solid #ddd;
+        margin: 2px;
+    }
+
+    .chat-item img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+
+    }
+
+    .chat-item .chat-info {
+        flex: 1;
+    }
+
+    .chat-item .chat-info .chat-name {
+        font-weight: bold;
+    }
+
+    .chat-item .chat-info .chat-message {
+        color: #888;
+    }
+
+    .chat-item .chat-time {
+        color: #888;
+        font-size: 10px;
+    }
+
+    .chat-time {
+        color: #888;
+        font-size: 0.75em;
+    }
+
+    .chat-window {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #e5ddd5;
+        height: 100vh;
+    }
+
+    .chat-header {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        background-color: #f0f0f0;
+    }
+
+    .chat-header img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .chat-header .chat-name {
+        font-weight: bold;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        background-image: url('../static/img/fondo_whatsapp.png');
+        background-size: auto;
+        background-repeat: repeat;
+    }
+
+    .chat-message {
+        margin-bottom: 10px;
+    }
+
+    .chat-message.sent {
+        text-align: right;
+    }
+
+    .chat-message .message-content {
+        display: inline-block;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 60%;
+    }
+
+    .chat-message.sent .message-content {
+        background-color: #dcf8c6;
+    }
+
+    .chat-message.received .message-content {
+        background-color: #fff;
+    }
+
+    .chat-footer {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        border-top: 1px solid #ddd;
+        background-color: #f0f0f0;
+    }
+
+    .chat-footer input {
+        flex: 1;
+        padding: 5px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+        margin-right: 10px;
+    }
+
+    .chat-footer button {
+        background: none;
+        border: none;
+        color: #888;
+        font-size: 20px;
+    }
+
+    footer {
+        display: none;
+    }
+</style>
+{% endblock%}
+{% block content%}
+<div class="container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img alt="Profile Picture" height="40" src="{{ url_for('static', filename='img/img1.jpg') }}" width="40" />
+            <div>
+                <i class="bi-chat"></i>
+                <i class="bi-three-dots-vertical"></i>
+            </div>
+        </div>
+        <div class="sidebar-search">
+            <input id="new-chat" placeholder="Busca un chat o inicia uno nuevo" type="text" />
+        </div>
+        <div class="chat-list">
+            <!-- <div class="chat-item">
+                <img alt="Marga" height="50"
+                    src="https://storage.googleapis.com/a1aa/image/aJ4ulP8Bm3LdLRoJGSUEamvL0ubIeArxH6NtxzXjXKFenCmTA.jpg"
+                    width="50" />
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Marga
+                    </div>
+                    <div class="chat-message">
+                        Ok
+                    </div>
+                </div>
+                <div class="chat-time">
+                    10/10/2024
+                </div>
+            </div>
+            <div class="chat-item active">
+                <img alt="Oli Salazar" height="50"
+                    src="https://storage.googleapis.com/a1aa/image/LC0afIn1DGwQfUTKMYekZa6qfrQGDofwiuEnvJa2SywfBqg5E.jpg"
+                    width="50" />
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Oli Salazar
+                    </div>
+                    <div class="chat-message">
+                        te felicito
+                    </div>
+                </div>
+                <div class="chat-time">
+                    9:28
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="chat-window">
+        <div class="chat-header">
+            <!-- <img alt="Oli Salazar" height="40"
+                src="https://storage.googleapis.com/a1aa/image/LC0afIn1DGwQfUTKMYekZa6qfrQGDofwiuEnvJa2SywfBqg5E.jpg"
+                width="40" />
+            <div class="chat-name">
+                Oli Salazar
+            </div>
+            <div class="ms-auto">
+                <i class="bi-search">
+                </i>
+                <i class="bi-paperclip">
+                </i>
+                <i class="bi-three-dots-vertical">
+                </i>
+            </div> -->
+            <img alt="Contacto" height="40" src="" width="40" /> <!-- Imagen del contacto -->
+            <div class="chat-name"></div> <!-- Nombre del contacto -->
+            <div class="ms-auto">
+                <i class="bi-search"></i>
+                <i class="bi-paperclip"></i>
+                <i class="bi-three-dots-vertical"></i>
+            </div>
+        </div>
+        <div class="chat-messages">
+            <!-- <div class="chat-message received"> -->
+            <!-- <div class="message-content">
+                    <img alt="Image" height="200"
+                        src="https://storage.googleapis.com/a1aa/image/DJXepgfzlpmC4Ur3p0k5OduCffK1EsLjdgDgsctVkMhDgKYOB.jpg"
+                        width="200" />
+                    <div>
+                        Si pa, la cocina es usada pero fuimos a ver y esta re bien
+                    </div>
+                    <div>
+                        Con garrafa viene ya
+                    </div>
+                </div>
+                <div class="chat-time">
+                    9:27
+                </div> -->
+            <!-- </div> -->
+            <!-- <div class="chat-message sent">
+                <div class="message-content">
+                    esta re bien
+                </div>
+                <div class="chat-time">
+                    9:27
+                </div>
+            </div>
+            <div class="chat-message sent">
+                <div class="message-content">
+                    lo importante es avanzar en una direccion
+                </div>
+                <div class="chat-time">
+                    9:28
+                </div>
+            </div>
+            <div class="chat-message received">
+                <div class="message-content">
+                    Si
+                </div>
+                <div class="chat-time">
+                    9:28
+                </div>
+            </div>
+            <div class="chat-message received">
+                <div class="message-content">
+                    Y hay una heladerita también, pero será para el próximo mes
+                </div>
+                <div class="chat-time">
+                    9:28
+                </div>
+            </div>
+            <div class="chat-message sent">
+                <div class="message-content">
+                    que bien
+                </div>
+                <div class="chat-time">
+                    9:28
+                </div>
+            </div>
+            <div class="chat-message sent">
+                <div class="message-content">
+                    te felicito
+                </div>
+                <div class="chat-time">
+                    9:28
+                </div>
+            </div> -->
+        </div>
+        <div class="chat-footer">
+            <input id="new-message" type="text" placeholder="Escribe un mensaje" />
+            <button>
+                <i class="bi-emoji-smile">
+                </i>
+            </button>
+            <button>
+                <i class="bi-mic">
+                </i>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="dropdown-menu" id="menu">
+        <a class="dropdown-item" href="#"><i class="bi bi-envelope-open"></i> Marcar como no leído</a>
+        <a class="dropdown-item" href="#"><i class="bi bi-trash"></i> Vaciar chat</a>
+        <a class="dropdown-item" href="#"><i class="bi bi-lock"></i> Bloquear contacto</a>
+        <a class="dropdown-item" href="#"><i class="bi bi-x-circle"></i> Eliminar mensajes</a>
+        <a class="dropdown-item" href="#"><i class="bi bi-volume-mute"></i> Silenciar</a>
+    </div>
+    <template id="chat-template">
+        <div class="chat-item" oncontextmenu="return showMenu(event)">
+            <img alt="Profile picture" height="50" width="50" />
+            <div class="info">
+                <h5></h5>
+                <p></p>
+            </div>
+            <div class="time"></div>
+        </div>
+    </template>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chatInput = document.getElementById('new-chat'); // Campo para añadir un nuevo chat
+        const messagesInput = document.getElementById('new-message'); // Campo para enviar mensajes
+        const messagesContainer = document.querySelector('.chat-messages'); // Contenedor de mensajes
+        const chatList = document.querySelector('.chat-list'); // Lista de chats
+        const chatHeader = document.querySelector('.chat-header'); // Encabezado del chat
+        const chatNameHeader = chatHeader.querySelector('.chat-name'); // Nombre en el encabezado del chat
+        const chatImageHeader = chatHeader.querySelector('img'); // Imagen del encabezado del chat
+        const menu = document.getElementById("menu"); // Menú desplegable
+        let activeChatItem = null; // Para saber cuál es el chat-item activo
+        let imageCounter = 1; // Contador para las imágenes del nuevo chat
+        let chats = {}; // Diccionario para almacenar los mensajes de cada contacto
+
+        // Verifica que los elementos existan
+        if (!chatInput || !messagesInput || !messagesContainer || !chatList || !chatHeader || !menu) {
+            console.error("Uno o más elementos no fueron encontrados en el DOM.");
+            return;
+        }
+
+        // Limpiar el chat al inicio
+        clearChat();
+
+        // Añadir evento para crear un nuevo chat cuando se presione Enter en new-chat
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const chatName = chatInput.value.trim();
+                if (chatName !== '') {
+                    const profilePicture = `/static/img/img${imageCounter}.jpg`;
+                    addChatItem(profilePicture, chatName, 'Nuevo chat...', getCurrentTime());
+                    imageCounter = (imageCounter % 7) + 1; // Ciclo a través de las imágenes
+                    chatInput.value = ''; // Limpiar input
+                }
+            }
+        });
+
+        // Añadir evento para enviar mensaje cuando se presione Enter en new-message
+        messagesInput.addEventListener('keydown', (e) => { 
+            if (e.key === 'Enter' ) {
+                alert(activeChatItem);           
+                const messageText = messagesInput.value.trim();                
+                
+                if (messageText !== '') {
+                    addMessage('sent', messageText); // Añadir mensaje "enviado"
+                    storeMessage(activeChatItem.dataset.name, 'sent', messageText); // Guardar mensaje
+                    messagesInput.value = ''; // Limpiar input
+                }
+            }
+        });
+
+        // Función para añadir un chat-item a la lista de chats
+        function addChatItem(profilePicture, name, message, time) {
+            const chatItem = document.createElement('div');
+            chatItem.classList.add('chat-item');
+            chatItem.dataset.name = name; // Guardar el nombre como atributo
+            chatItem.innerHTML = `
+            <img alt="${name}" src="${profilePicture}" width="50" height="50" />
+            <div class="chat-info">
+                <div class="chat-name">${name}</div>
+                <div class="chat-message">${message}</div>
+            </div>
+            <div class="chat-time">${time}</div>
+        `;
+
+            // Añadir evento de clic derecho para mostrar el menú
+            chatItem.addEventListener('contextmenu', (event) => {
+                showMenu(event, chatItem); // Pasar el chatItem a la función showMenu
+            });
+
+            // Añadir evento de clic para seleccionar un chat
+            chatItem.addEventListener('click', () => {
+                selectChat(chatItem, profilePicture, name); // Pasar el chatItem seleccionado
+            });
+
+            // Añadir el nuevo chat-item a la lista
+            chatList.appendChild(chatItem);
+
+            // Inicializar chat vacío para ese contacto
+            if (!chats[name]) {
+                chats[name] = [];
+            }
+        }
+
+        // Función para seleccionar un chat y cargar su información
+        function selectChat(chatItem, profilePicture, name) {
+            alert(chatItem);
+            if (activeChatItem) {
+                activeChatItem.classList.remove('active'); // Remover clase 'active' del chat anterior
+            }
+            activeChatItem = chatItem;
+            chatItem.classList.add('active'); // Añadir clase 'active' al chat seleccionado
+
+            // Actualizar el encabezado del chat
+            chatNameHeader.textContent = name;
+            chatImageHeader.src = profilePicture;
+
+            // Cargar los mensajes del chat seleccionado
+            loadMessages(name);
+        }
+
+        // Función para cargar los mensajes de un contacto
+        function loadMessages(contactName) {
+            messagesContainer.innerHTML = ''; // Limpiar mensajes actuales
+            const contactMessages = chats[contactName];
+            contactMessages.forEach(message => {
+                addMessage(message.type, message.text); // Cargar los mensajes guardados
+            });
+        }
+
+        // Función para añadir un mensaje en el chat
+        function addMessage(type, text) {
+            const messageHTML = `
+            <div class="chat-message ${type}">
+                <div class="message-content">${text}</div>
+                <div class="chat-time">${getCurrentTime()}</div>
+            </div>
+        `;
+            messagesContainer.innerHTML += messageHTML; // Añadir el nuevo mensaje al contenedor
+            messagesContainer.scrollTop = messagesContainer.scrollHeight; // Desplazar al final
+        }
+
+        // Función para guardar un mensaje en el diccionario de chats
+        function storeMessage(contactName, type, text) {
+            chats[contactName].push({ type, text }); // Guardar mensaje para ese contacto
+        }
+
+        // Función para mostrar el menú en la posición del clic derecho
+        function showMenu(event, chatItem) {
+            event.preventDefault(); // Prevenir el menú contextual por defecto
+            hideMenu(); // Oculta cualquier otro menú antes de mostrar uno nuevo
+
+            activeChatItem = chatItem; // Guardar el chat-item activo
+            const mouseX = event.clientX; // Coordenadas X
+            const mouseY = event.clientY; // Coordenadas Y
+
+            // Posicionar el menú en la ubicación del clic
+            menu.style.top = `${mouseY}px`;
+            menu.style.left = `${mouseX}px`;
+            menu.style.display = 'block'; // Mostrar el menú
+        }
+
+        // Función para ocultar el menú
+        function hideMenu() {
+            menu.style.display = 'none'; // Ocultar el menú
+            activeChatItem = null; // Resetear el chat-item activo
+        }
+
+        // Función para limpiar el chat
+        function clearChat() {
+            chatNameHeader.textContent = ''; // Limpiar nombre del contacto
+            chatImageHeader.src = ''; // Limpiar imagen del contacto
+            messagesContainer.innerHTML = ''; // Limpiar mensajes
+        }
+
+        // Cerrar el menú si se hace clic en cualquier parte fuera del chat-item o del menú
+        document.addEventListener('click', function (event) {
+            if (!menu.contains(event.target) && activeChatItem && !activeChatItem.contains(event.target)) {
+                hideMenu(); // Ocultar el menú
+            }
+        });
+
+        // Obtener la hora actual
+        function getCurrentTime() {
+            const date = new Date();
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`; // Formato de hora
+        }
+    });
+
+
+</script>
+{% endblock %}
