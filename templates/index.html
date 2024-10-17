@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 
 {% block style %}
@@ -538,3 +539,454 @@
 
 </script>
 {% endblock %}
+=======
+<html>
+
+<head>
+  <title>
+    WhatsApp Web Clone
+  </title>
+  <!-- Bootstrap CSS (offline) -->
+  <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='bootstrap-icons/font/bootstrap-icons.min.css') }}" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+  <!-- font Awesome -->
+  <link href="{{ url_for('static', filename='fontawesome/css/all.min.css') }}" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 30%;
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .sidebar-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .sidebar-search {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .sidebar-search input {
+      width: 100%;
+      padding: 5px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+    }
+
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+
+    .chat-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .chat-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .chat-item .chat-info {
+      flex: 1;
+    }
+
+    .chat-item .chat-info .chat-name {
+      font-weight: bold;
+    }
+
+    .chat-item .chat-info .chat-message {
+      color: #888;
+    }
+
+    .chat-item .chat-time {
+      color: #888;
+      font-size: 12px;
+    }
+
+    .chat-window {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: #e5ddd5;
+    }
+
+    .chat-header {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      background-color: #f0f0f0;
+    }
+
+    .chat-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .chat-header .chat-name {
+      font-weight: bold;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-image: url('../static/img/food.png');
+      background-size:auto;
+      background-repeat: repeat;
+    }
+
+    .chat-message {
+      margin-bottom: 10px;
+    }
+
+    .chat-message.sent {
+      text-align: right;
+    }
+
+    .chat-message .message-content {
+      display: inline-block;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 60%;
+    }
+
+    .chat-message.sent .message-content {
+      background-color: #dcf8c6;
+    }
+
+    .chat-message.received .message-content {
+      background-color: #fff;
+    }
+
+    .chat-footer {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #ddd;
+      background-color: #f0f0f0;
+    }
+
+    .chat-footer input {
+      flex: 1;
+      padding: 5px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      margin-right: 10px;
+    }
+
+    .chat-footer button {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <img alt="Profile Picture" height="40"
+        src="{{ url_for('static', filename='img/img1.jpg') }}" width="40" />
+        <div>
+          <i class="bi-chat"></i>
+          <i class="bi-three-dots-vertical"></i>
+        </div>
+      </div>
+      <div class="sidebar-search">
+        <input placeholder="Busca un chat o inicia uno nuevo" type="text" />
+      </div>
+      <div class="chat-list">
+        <div class="chat-item">
+          <img alt="Marga" height="50"
+            src="https://storage.googleapis.com/a1aa/image/aJ4ulP8Bm3LdLRoJGSUEamvL0ubIeArxH6NtxzXjXKFenCmTA.jpg"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Marga
+            </div>
+            <div class="chat-message">
+              Ok
+            </div>
+          </div>
+          <div class="chat-time">
+            10/10/2024
+          </div>
+        </div>
+        <div class="chat-item active">
+          <img alt="Oli Salazar" height="50"
+            src="https://storage.googleapis.com/a1aa/image/LC0afIn1DGwQfUTKMYekZa6qfrQGDofwiuEnvJa2SywfBqg5E.jpg"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Oli Salazar
+            </div>
+            <div class="chat-message">
+              te felicito
+            </div>
+          </div>
+          <div class="chat-time">
+            9:28
+          </div>
+        </div>
+        <div class="chat-item">
+          <img alt="Geraldine" height="50"
+            src="https://storage.googleapis.com/a1aa/image/pxT9wal41f3tHCmeVP71SOXwjmaYoXbqkE8vg0PFpC6CoCmTA.jpg"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Geraldine
+            </div>
+            <div class="chat-message">
+              ok
+            </div>
+          </div>
+          <div class="chat-time">
+            9:21
+          </div>
+        </div>
+        <div class="chat-item">
+          <img alt="Cule Pindo" height="50"
+            src="https://storage.googleapis.com/a1aa/image/kn03pfrPLzTxJC8T1Vcph7rh1IfMo4F4qRm6OjILRGuFoCmTA.jpg"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Cule Pindo
+            </div>
+            <div class="chat-message">
+              Hs 1ra Quince...
+            </div>
+          </div>
+          <div class="chat-time">
+            Ayer
+          </div>
+        </div>
+        <div class="chat-item">
+          <img alt="Familia" height="50"
+            src="https://storage.googleapis.com/a1aa/image/cD4uKUcOtG6YMdRdn6lDWMsSa88nPLO3fvztKItguxm9TBzJA.jpg"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Familia
+            </div>
+            <div class="chat-message">
+              Geraldine cambió el...
+            </div>
+          </div>
+          <div class="chat-time">
+            9:06
+          </div>
+        </div>
+        <div class="chat-item">
+          <img alt="Nicolas H" height="50"
+            src="https://storage.googleapis.com/a1aa/image/sOMPZVZ2AY50AxzEVNGCAJooHz780Er4ezPpQd1H4p9enCmTA.jpg"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Nicolas H
+            </div>
+            <div class="chat-message">
+              si, creo que no tr...
+            </div>
+          </div>
+          <div class="chat-time">
+            10/10/2024
+          </div>
+        </div>
+        <div class="chat-item">
+          <img alt="Hernar SC" height="50"
+            src="{{ url_for('static', filename='img/img1.jpg') }}"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Hernar SC
+            </div>
+            <div class="chat-message">
+              Igualmente pa que e...
+            </div>
+          </div>
+          <div class="chat-time">
+            10/10/2024
+          </div>
+        </div>
+        <div class="chat-item">
+          <img alt="Telecom" height="50"
+            src="https://storage.googleapis.com/a1aa/image/aV23fdtD5cUvSShpYlFKeaHaYfcmUeT81M0U1ojIHQ38fUwcC.jpg"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Telecom
+            </div>
+            <div class="chat-message">
+              perfecto, Gracias...
+            </div>
+          </div>
+          <div class="chat-time">
+            10/10/2024
+          </div>
+        </div>
+        <div class="chat-item">
+          <img alt="Yo (tú)" height="50"
+            src="https://storage.googleapis.com/a1aa/image/WkdBFMi3zPqaPVgbIBYTU9rGVfIU9bz8zccK2DyTT7jBUBzJA.jpg"
+            width="50" />
+          <div class="chat-info">
+            <div class="chat-name">
+              Yo (tú)
+            </div>
+            <div class="chat-message">
+              https://open.spot...
+            </div>
+          </div>
+          <div class="chat-time">
+            10/10/2024
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-window">
+      <div class="chat-header">
+        <img alt="Oli Salazar" height="40"
+          src="https://storage.googleapis.com/a1aa/image/LC0afIn1DGwQfUTKMYekZa6qfrQGDofwiuEnvJa2SywfBqg5E.jpg"
+          width="40" />
+        <div class="chat-name">
+          Oli Salazar
+        </div>
+        <div class="ms-auto">
+          <i class="bi-search">
+          </i>
+          <i class="bi-paperclip">
+          </i>
+          <i class="bi-three-dots-vertical">
+          </i>
+        </div>
+      </div>
+      <div class="chat-messages">
+        <div class="chat-message received">
+          <div class="message-content">
+            <img alt="Image" height="200"
+              src="https://storage.googleapis.com/a1aa/image/DJXepgfzlpmC4Ur3p0k5OduCffK1EsLjdgDgsctVkMhDgKYOB.jpg"
+              width="200" />
+            <div>
+              Si pa, la cocina es usada pero fuimos a ver y esta re bien
+            </div>
+            <div>
+              Con garrafa viene ya
+            </div>
+          </div>
+          <div class="chat-time">
+            9:27
+          </div>
+        </div>
+        <div class="chat-message sent">
+          <div class="message-content">
+            esta re bien
+          </div>
+          <div class="chat-time">
+            9:27
+          </div>
+        </div>
+        <div class="chat-message sent">
+          <div class="message-content">
+            lo importante es avanzar en una direccion
+          </div>
+          <div class="chat-time">
+            9:28
+          </div>
+        </div>
+        <div class="chat-message received">
+          <div class="message-content">
+            Si
+          </div>
+          <div class="chat-time">
+            9:28
+          </div>
+        </div>
+        <div class="chat-message received">
+          <div class="message-content">
+            Y hay una heladerita también, pero será para el próximo mes
+          </div>
+          <div class="chat-time">
+            9:28
+          </div>
+        </div>
+        <div class="chat-message sent">
+          <div class="message-content">
+            que bien
+          </div>
+          <div class="chat-time">
+            9:28
+          </div>
+        </div>
+        <div class="chat-message sent">
+          <div class="message-content">
+            te felicito
+          </div>
+          <div class="chat-time">
+            9:28
+          </div>
+        </div>
+      </div>
+      <div class="chat-footer">
+        <input placeholder="Escribe un mensaje" type="text" />
+        <button>
+          <i class="bi-emoji-smile">
+          </i>
+        </button>
+        <button>
+          <i class="bi-mic">
+          </i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap JS (offline) -->
+  <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap/js/popper.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+  <!-- <script src="
+</body>
+
+</html>
+>>>>>>> cc5fca49f18fdc94f88953a7feee20a7088a2add

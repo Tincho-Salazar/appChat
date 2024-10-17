@@ -39,10 +39,17 @@ deactivate nondestructive
 if [ "${OSTYPE:-}" = "cygwin" ] || [ "${OSTYPE:-}" = "msys" ] ; then
     # transform D:\path\to\venv to /d/path/to/venv on MSYS
     # and to /cygdrive/d/path/to/venv on Cygwin
+<<<<<<< HEAD
     export VIRTUAL_ENV=$(cygpath "C:\Users\tincho\Downloads\Python\Appchat\venv")
 else
     # use the path as-is
     export VIRTUAL_ENV="C:\Users\tincho\Downloads\Python\Appchat\venv"
+=======
+    export VIRTUAL_ENV=$(cygpath "C:\Users\Tincho\Downloads\AppPython\Appchat\venv")
+else
+    # use the path as-is
+    export VIRTUAL_ENV="C:\Users\Tincho\Downloads\AppPython\Appchat\venv"
+>>>>>>> cc5fca49f18fdc94f88953a7feee20a7088a2add
 fi
 
 _OLD_VIRTUAL_PATH="$PATH"

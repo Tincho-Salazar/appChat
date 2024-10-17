@@ -77,11 +77,17 @@ def login():
         print(user)
         if user and check_password_hash(user['contrasena'], password):
             session['usuario'] = user['usuario']
+<<<<<<< HEAD
             # print('entro')
             # session['rol'] = user['rol']  # Si tienes un rol en tu tabla, ajusta esto
             return jsonify({'status': 'success', 'redirect': url_for('index')})
             # return redirect(url_for('index'))
 
+=======
+            print('entro')
+            # session['rol'] = user['rol']  # Si tienes un rol en tu tabla, ajusta esto
+            return jsonify({'status': 'success', 'redirect': url_for('index')})
+>>>>>>> cc5fca49f18fdc94f88953a7feee20a7088a2add
         else:
             return jsonify({'status': 'error', 'message': 'Nombre de usuario o contraseña incorrectos'})
     
@@ -137,4 +143,8 @@ def register():
 
 if __name__ == '__main__':
     init_db()
+<<<<<<< HEAD
     app.run(debug=True)
+=======
+    app.run(debug=True)
+>>>>>>> cc5fca49f18fdc94f88953a7feee20a7088a2add

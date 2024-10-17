@@ -8,7 +8,11 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
+<<<<<<< HEAD
 set VIRTUAL_ENV=C:\Users\tincho\Downloads\Python\Appchat\venv
+=======
+set VIRTUAL_ENV=C:\Users\Tincho\Downloads\AppPython\Appchat\venv
+>>>>>>> cc5fca49f18fdc94f88953a7feee20a7088a2add
 
 if not defined PROMPT set PROMPT=$P$G
 
