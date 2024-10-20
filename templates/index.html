@@ -2,29 +2,52 @@
 
 {% block style %}
 <style>
+  html,
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* background-color: #f0f0f0;
-        margin: 10px;
-        padding: 5px; */
-  }
-
-  .container {
+    /* height: 100%; */
+    /* Asegura que el body ocupe toda la altura de la página */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Asegura que el padding y bordes se incluyan en el tamaño total */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    margin-top: 1.5rem;
-
+    flex-direction: column;
+    /* Distribuye los hijos en columna, con el footer al final */
   }
 
+  /* Sidebar con bordes redondeados en las esquinas top-left y bottom-left */
   .sidebar {
     width: 35%;
     height: 100vh;
     background-color: #fff;
     border-right: 1px solid #ddd;
+    border-top-left-radius: 15px;
+    /* Redondear esquinas superiores e inferiores */
+    border-bottom-left-radius: 15px;
     display: flex;
     flex-direction: column;
+  }
+
+  .chat-window {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #e5ddd5;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  /* Chat window con bordes redondeados en top-right y bottom-right */
+  .chat-header {
+
+    border-top-right-radius: 15px;
+    /* Redondear esquinas superiores e inferiores */
+    /* border-bottom-right-radius: 10px; */
+  }
+
+  .chat-footer {
+    border-bottom-right-radius: 15px;
   }
 
   .sidebar-header {
@@ -41,9 +64,12 @@
     border-radius: 50%;
   }
 
-  .sideba-searchr {
+  .sidebar-search {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    background-color: #f0f0f0;
   }
 
   .sidebar-search input {
@@ -110,6 +136,8 @@
     flex-direction: column;
     background-color: #e5ddd5;
     height: 100vh;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
   }
 
   .chat-header {
@@ -186,12 +214,42 @@
     font-size: 20px;
   }
 
+  /* El footer se colocará al final de la página */
   footer {
-    display: none;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    /* margin-top: auto;   */
+    /* Empuja el footer al final */
   }
 
   img[src=""] {
     display: none;
+  }
+
+
+  #new-chat:focus {
+    outline: none;
+    /* Elimina el contorno que aparece por defecto al enfocar */
+    border: none;
+    background-color: #AFC8AD;
+    /* Elimina el borde cuando el campo está enfocado */
+  }
+
+  .container {
+    /*flex: 1;
+    /* Ocupa el espacio entre el header y el footer */
+    /*display: flex;*/
+    align-content: center;
+    margin-inline: auto;
+    justify-content: center;
+    padding: 10px;
+    background-color: #88AB8E;
+    border-radius: 10px;
+    box-sizing: border-box;
+    /* Incluir el padding en el tamaño total */
   }
 </style>
 {% endblock%}
@@ -209,56 +267,11 @@
       <input id="new-chat" placeholder="Busca un chat o inicia uno nuevo" type="text" />
     </div>
     <div class="chat-list">
-      <!-- <div class="chat-item">
-                <img alt="Marga" height="50"
-                    src="https://storage.googleapis.com/a1aa/image/aJ4ulP8Bm3LdLRoJGSUEamvL0ubIeArxH6NtxzXjXKFenCmTA.jpg"
-                    width="50" />
-                <div class="chat-info">
-                    <div class="chat-name">
-                        Marga
-                    </div>
-                    <div class="chat-message">
-                        Ok
-                    </div>
-                </div>
-                <div class="chat-time">
-                    10/10/2024
-                </div>
-            </div>
-            <div class="chat-item active">
-                <img alt="Oli Salazar" height="50"
-                    src="https://storage.googleapis.com/a1aa/image/LC0afIn1DGwQfUTKMYekZa6qfrQGDofwiuEnvJa2SywfBqg5E.jpg"
-                    width="50" />
-                <div class="chat-info">
-                    <div class="chat-name">
-                        Oli Salazar
-                    </div>
-                    <div class="chat-message">
-                        te felicito
-                    </div>
-                </div>
-                <div class="chat-time">
-                    9:28
-                </div>
-            </div> -->
     </div>
   </div>
   <div class="chat-window">
     <div class="chat-header">
-      <!-- <img alt="Oli Salazar" height="40"
-                src="https://storage.googleapis.com/a1aa/image/LC0afIn1DGwQfUTKMYekZa6qfrQGDofwiuEnvJa2SywfBqg5E.jpg"
-                width="40" />
-            <div class="chat-name">
-                Oli Salazar
-            </div>
-            <div class="ms-auto">
-                <i class="bi-search">
-                </i>
-                <i class="bi-paperclip">
-                </i>
-                <i class="bi-three-dots-vertical">
-                </i>
-            </div> -->
+   
       <img alt="Contacto" height="40" src="" width="40" /> <!-- Imagen del contacto -->
       <div class="chat-name"></div> <!-- Nombre del contacto -->
       <div class="ms-auto">
@@ -268,70 +281,7 @@
       </div>
     </div>
     <div class="chat-messages">
-      <!-- <div class="chat-message received"> -->
-      <!-- <div class="message-content">
-                    <img alt="Image" height="200"
-                        src="https://storage.googleapis.com/a1aa/image/DJXepgfzlpmC4Ur3p0k5OduCffK1EsLjdgDgsctVkMhDgKYOB.jpg"
-                        width="200" />
-                    <div>
-                        Si pa, la cocina es usada pero fuimos a ver y esta re bien
-                    </div>
-                    <div>
-                        Con garrafa viene ya
-                    </div>
-                </div>
-                <div class="chat-time">
-                    9:27
-                </div> -->
-      <!-- </div> -->
-      <!-- <div class="chat-message sent">
-                <div class="message-content">
-                    esta re bien
-                </div>
-                <div class="chat-time">
-                    9:27
-                </div>
-            </div>
-            <div class="chat-message sent">
-                <div class="message-content">
-                    lo importante es avanzar en una direccion
-                </div>
-                <div class="chat-time">
-                    9:28
-                </div>
-            </div>
-            <div class="chat-message received">
-                <div class="message-content">
-                    Si
-                </div>
-                <div class="chat-time">
-                    9:28
-                </div>
-            </div>
-            <div class="chat-message received">
-                <div class="message-content">
-                    Y hay una heladerita también, pero será para el próximo mes
-                </div>
-                <div class="chat-time">
-                    9:28
-                </div>
-            </div>
-            <div class="chat-message sent">
-                <div class="message-content">
-                    que bien
-                </div>
-                <div class="chat-time">
-                    9:28
-                </div>
-            </div>
-            <div class="chat-message sent">
-                <div class="message-content">
-                    te felicito
-                </div>
-                <div class="chat-time">
-                    9:28
-                </div>
-            </div> -->
+     
     </div>
     <div class="chat-footer">
       <input id="new-message" type="text" placeholder="Escribe un mensaje" />
@@ -345,26 +295,27 @@
       </button>
     </div>
   </div>
-
-
-  <div class="dropdown-menu" id="menu">
-    <a class="dropdown-item" href="#"><i class="bi bi-envelope-open"></i> Marcar como no leído</a>
-    <a class="dropdown-item" href="#"><i class="bi bi-trash"></i> Vaciar chat</a>
-    <a class="dropdown-item" href="#"><i class="bi bi-lock"></i> Bloquear contacto</a>
-    <a class="dropdown-item" href="#"><i class="bi bi-x-circle"></i> Eliminar mensajes</a>
-    <a class="dropdown-item" href="#"><i class="bi bi-volume-mute"></i> Silenciar</a>
+  <div>
+    {% include 'footer.html' %}
   </div>
-  <template id="chat-template">
-    <div class="chat-item" oncontextmenu="return showMenu(event)">
-      <img alt="Profile picture" height="50" width="50" />
-      <div class="info">
-        <h5></h5>
-        <p></p>
-      </div>
-      <div class="time"></div>
-    </div>
-  </template>
 </div>
+<div class="dropdown-menu" id="menu">
+  <a class="dropdown-item" href="#"><i class="bi bi-envelope-open"></i> Marcar como no leído</a>
+  <a class="dropdown-item" href="#"><i class="bi bi-trash"></i> Vaciar chat</a>
+  <a class="dropdown-item" href="#"><i class="bi bi-lock"></i> Bloquear contacto</a>
+  <a class="dropdown-item" href="#"><i class="bi bi-x-circle"></i> Eliminar mensajes</a>
+  <a class="dropdown-item" href="#"><i class="bi bi-volume-mute"></i> Silenciar</a>
+</div>
+<template id="chat-template">
+  <div class="chat-item" oncontextmenu="return showMenu(event)">
+    <img alt="Profile picture" height="50" width="50" />
+    <div class="info">
+      <h5></h5>
+      <p></p>
+    </div>
+    <div class="time"></div>
+  </div>
+</template>
 {% endblock %}
 
 

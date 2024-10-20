@@ -1,6 +1,20 @@
 
 {% extends "base.html" %} 
 
+{% block style %}
+<style>
+  footer {
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    /* margin-top: auto;   */
+    /* Empuja el footer al final */
+  }
+
+</style>
+{% endblock%}
 {% block content %}
 <div
   id="toastContainer"
@@ -30,8 +44,8 @@
 </div>
 
 <div
-  class="bg-white p-5 rounded-5 text-secondary shadow"
-  style="width: 25rem; margin: auto"
+  class="bg-white p-5 rounded-5 text-secondary shadow mt-5"
+  style="width: 25rem;"
 >
   <div class="d-flex justify-content-center">
     <img
@@ -106,6 +120,9 @@
     >
   </div>
 </div>
+<!-- <div> -->
+  <!-- {% include 'footer.html' %} -->
+<!-- </div> -->
 {% endblock %} 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
@@ -121,8 +138,7 @@
         type: "POST",
         data: formData,
         dataType: "json",
-        success: function (response) {
-          alert(response.redirect);
+        success: function (response) {          
           if (response.status === "success") {
             window.location.href = response.redirect;
           } else if (response.status === "error") {
