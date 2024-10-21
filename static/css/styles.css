@@ -10,7 +10,7 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+  /* flex-grow: 1; */
 }
 
 footer.footer {
@@ -27,61 +27,3 @@ footer.footer {
   color: #b5b5b5 !important;
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 1;
-  display: none;
-  flex-direction: column;
-  padding: 0;
-  margin: 0;
-  font-size: 14px;
-  color: #333;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
-  width: 200px;
-  /* Añadimos un ancho fijo para que no ocupe todo el ancho de la página */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  /* Añadimos una sombra para darle un efecto más vistoso */
-}
-
-.dropdown-menu.show {
-  display: block;
-}
-
-.dropdown-item {
-  width: 100%;
-  padding: 0.25rem 1.5rem;
-  clear: both;
-  font-weight: 400;
-  color: #212529;
-  text-align: inherit;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
-}
-
-.dropdown-item:hover {
-  color: #161616;
-  text-decoration: none;
-  background-color: #f8f9fa;
-}
-
-.dropdown-item i {
-  margin-right: 10px;
-}
-
-#menu {
-  display: none; /* Oculto por defecto */
-  position: absolute; /* Posicionamos absolutamente para moverlo con JavaScript */
-  z-index: 1000; /* Para asegurarnos de que esté por encima de otros elementos */
-}
-
-#menu.show {
-  display: block;
-}
