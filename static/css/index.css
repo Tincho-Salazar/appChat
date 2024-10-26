@@ -140,9 +140,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center; */
-  /* width: 100vw;  /* Ocupar el 100% del ancho de la pantalla */
-  /*height: 100vh; /* Ocupar el 100% del alto de la pantalla */
-  /*background-color: #f0f0f0; /* Color de fondo para visualizar */
+/* width: 100vw;  /* Ocupar el 100% del ancho de la pantalla */
+/*height: 100vh; /* Ocupar el 100% del alto de la pantalla */
+/*background-color: #f0f0f0; /* Color de fondo para visualizar */
 /* } */
 
 .container:not(footer .container) {
@@ -151,8 +151,7 @@
   box-sizing: border-box;
   display: flex;
   padding: 10px;
-  width: 100vw;  /* Ocupar el 100% del ancho de la pantalla */
-  
+  width: 100vw; /* Ocupar el 100% del ancho de la pantalla */
 }
 
 .dropdown-item {
@@ -222,8 +221,33 @@ body {
   height: 100%;
 }
 
+.icono-hover {
+  display: inline-block;
+  /* font-size: 30px; */
+  color: #666;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.icono-hover:hover {
+  transform: scale(1.5);
+  color: #ffee10; /* Cambia el color del icono si lo deseas */
+}
+
 img[src=""] {
- visibility: hidden;
+  visibility: hidden;
+}
+
+.logo-chat {
+  display: inline-block;
+  position: relative;
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* Suaviza el resplandor y el zoom */
+}
+
+.logo-chat:hover {
+  padding: 1.5px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 5px #ffee10; /* Resplandor dorado alrededor */
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño */
 }
 
 #menu {
@@ -253,6 +277,39 @@ img[src=""] {
   height: 80vh;
   min-width: 210px;
   width: 35%;
+}
+
+.sidebar-contacts {
+  display: none; /*Ocultar por defecto */
+  padding: 10px;
+  border-top: 1px solid #ccc; /* Límite superior */
+}
+
+.contacts-list {
+  display: none; /* Oculto por defecto */
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  position: absolute; /* Para que se superponga al input */
+  z-index: 9999; /* Asegúrate de que esté por encima de otros elementos */
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente para ver si se muestra */
+  border: 1px solid #ccc;
+}
+
+.contact-item {
+  padding: 10px;
+  cursor: pointer;
+}
+.contact-item:hover {
+  background-color: #f0f0f0; /* Cambio de color al pasar el ratón */
+}
+
+.contact-item img {
+  border-radius: 50%; /* Hacer la imagen circular */
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
 .sidebar-header {

@@ -1,55 +1,55 @@
-{% extends 'base.html' %}
-
-{% block style %}
+{% extends 'base.html' %} {% block style %}
 <!--  Custom CSS  -->
 <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" />
 
-{% endblock%}
-{% block content%}
+{% endblock%} {% block content%}
 <div class="container chat-group">
   <div class="sidebar">
     <div class="sidebar-header">
-      <span>
-        <img alt="Profile Picture" height="40" src="{{ url_for('static', filename='img/workChat.png') }}" width="40" />
+      <span class="logo-chat">
+        <img alt="Marca Picture" height="40" src="{{ url_for('static', filename='img/workChat.png') }}" width="40" />
         <b>WorkChat</b></span>
       <div>
         <div class="text-success mt-2">
           {{ session['usuario'] }}
           <span>
-            <i class="bi bi-box-arrow-left"></i>
+            <a href="/logout" class="text-success icono-hover">
+              <i class="bi bi-box-arrow-left"></i>
+            </a>
           </span>
         </div>
       </div>
     </div>
     <div class="sidebar-search">
       <input id="new-chat" placeholder="Busca un chat o inicia uno nuevo" type="text" />
+      <ul id="user-list" class="listbox"></ul>
     </div>
-    <div class="chat-list">
+    <div class="sidebar-contacts" id="sidebar-contacts">
+      <h5>Contactos</h5>
+      <div id="contacts-list" class="contacts-list"></div>
     </div>
+    <div class="chat-list"></div>
   </div>
   <div class="chat-window">
     <div class="chat-header">
-
-      <img alt="Contacto" height="40" src="" width="40" /> <!-- Imagen del contacto -->
-      <div class="chat-name"></div> <!-- Nombre del contacto -->
+      <img alt="Contacto" height="40" src="" width="40" />
+      <!-- Imagen del contacto -->
+      <div class="chat-name"></div>
+      <!-- Nombre del contacto -->
       <div class="ms-auto">
         <i class="bi-search"></i>
         <i class="bi-paperclip"></i>
         <i class="bi-three-dots-vertical"></i>
       </div>
     </div>
-    <div class="chat-messages">
-
-    </div>
+    <div class="chat-messages"></div>
     <div class="chat-footer">
       <input id="new-message" type="text" placeholder="Escribe un mensaje" />
       <button>
-        <i class="bi-emoji-smile">
-        </i>
+        <i class="bi-emoji-smile"> </i>
       </button>
       <button>
-        <i class="bi-mic">
-        </i>
+        <i class="bi-mic"> </i>
       </button>
     </div>
   </div>
@@ -73,195 +73,239 @@
   </div>
 </template>
 {% endblock %}
-
-
 {% block scripts %}
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const chatInput = document.getElementById('new-chat'); // Campo para añadir un nuevo chat
-    const messagesInput = document.getElementById('new-message'); // Campo para enviar mensajes
-    const messagesContainer = document.querySelector('.chat-messages'); // Contenedor de mensajes
-    const chatList = document.querySelector('.chat-list'); // Lista de chats
-    const chatHeader = document.querySelector('.chat-header'); // Encabezado del chat
-    const chatNameHeader = chatHeader.querySelector('.chat-name'); // Nombre en el encabezado del chat
-    const chatImageHeader = chatHeader.querySelector('img'); // Imagen del encabezado del chat
-    const menu = document.getElementById("menu"); // Menú desplegable
-    let activeChatItem = null; // Para saber cuál es el chat-item activo
-    let imageCounter = 1; // Contador para las imágenes del nuevo chat
-    let chats = {}; // Diccionario para almacenar los mensajes de cada contacto
-
-    // Verifica que los elementos existan
-    if (!chatInput || !messagesInput || !messagesContainer || !chatList || !chatHeader || !menu) {
-      console.error("Uno o más elementos no fueron encontrados en el DOM.");
-      return;
-    }
+  document.addEventListener("DOMContentLoaded", function () {
+    const chatInput = document.getElementById("new-chat");  // Campo para buscar/crear un chat
+    const messagesInput = document.getElementById("new-message");  // Campo para enviar mensajes
+    const messagesContainer = document.querySelector(".chat-messages");
+    const chatList = document.querySelector(".chat-list");
+    const chatHeader = document.querySelector(".chat-header");
+    const chatNameHeader = chatHeader.querySelector(".chat-name");
+    const chatImageHeader = chatHeader.querySelector("img");
+    const contactsList = document.getElementById('contacts-list');
+    const sidebarContacts = document.getElementById('sidebar-contacts');
+    let activeChatItem = null;  // Elemento de la conversación activa
+    let activeConversationId = null;  // ID de la conversación activa
+    let chats = {};
+    const userId = "{{ user_id }}";  // Obtener user_id de la sesión
 
     // Limpiar el chat al inicio
     clearChat();
 
-    // Añadir evento para crear un nuevo chat cuando se presione Enter en new-chat
-    chatInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const chatName = chatInput.value.trim();
-        if (chatName !== '') {
-          const profilePicture = `/static/img/img${imageCounter}.jpg`;
-          addChatItem(profilePicture, chatName, 'Nuevo chat...', getCurrentTime());
-          imageCounter = (imageCounter % 7) + 1; // Ciclo a través de las imágenes
-          chatInput.value = ''; // Limpiar input
-        }
+    // Buscar usuarios mientras escribes en new-chat
+    chatInput.addEventListener('input', function () {
+      const query = chatInput.value.trim();
+      contactsList.innerHTML = '';
+
+      if (query !== '') {
+        fetch(`/buscar_usuarios?query=${query}`)
+          .then(response => response.json())
+          .then(users => {
+            users.forEach(user => {
+              const listItem = document.createElement('div');
+              listItem.className = 'contact-item';
+              const profilePictureUrl = `/user_image/${user.id}`;
+              listItem.innerHTML = `
+            <img src="${profilePictureUrl}" alt="${user.first_name}" />
+            <span>${user.first_name} (${user.alias_name})</span>`;
+              listItem.addEventListener('click', () => {
+                createOrOpenChat(user.id, user.first_name, profilePictureUrl)
+                  .then(conversationId => {
+                    setActiveChat(conversationId, user.first_name, profilePictureUrl);  // Establecer el chat activo
+                  });
+                chatInput.value = '';
+                contactsList.innerHTML = '';
+                contactsList.style.display = 'none';
+                sidebarContacts.style.display = 'none';
+              });
+              contactsList.appendChild(listItem);
+            });
+            contactsList.style.display = 'block';
+            sidebarContacts.style.display = 'block';
+          })
+          .catch(error => console.error('Error al buscar usuarios:', error));
+      } else {
+        contactsList.style.display = 'none';
+        sidebarContacts.style.display = 'none';
       }
     });
 
-    // Añadir evento para enviar mensaje cuando se presione Enter en new-message
-    messagesInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
+    // Crear o abrir un chat existente
+    function createOrOpenChat(userId, userName, profilePictureUrl) {
+      return new Promise((resolve, reject) => {
+        fetch(`/verificar_conversacion?user_id=${userId}`)
+          .then(response => response.json())
+          .then(conversation => {
+            if (conversation.exists) {
+              resolve(conversation.id);  // Devolver el ID de la conversación existente
+            } else {
+              // Si la conversación no existe, crear una nueva
+              console.log('conversation',conversation);
+              fetch(`/crear_conversacion`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  user_id: userId,
+                  nombre: userName
+                }),
+              })
+                .then(response => response.json())
+                .then(data => {
+                  addChatItem(profilePictureUrl, userName, 'Nuevo chat...', getCurrentTime());
+                  resolve(data.conversation_id);  // Devolver el ID de la nueva conversación
+                  console.log(data.conversation_id);
+                })
+                .catch(error => {
+                  console.error('Error al crear la conversación:', error);
+                  reject(error);
+                });
+            }
+          })
+          .catch(error => {
+            console.error('Error al verificar la conversación:', error);
+            reject(error);
+          });
+      });
+    }
+
+    // Establecer el chat activo y cargar mensajes
+    function setActiveChat(conversationId, userName, profilePictureUrl) {
+      chatNameHeader.textContent = userName;
+      chatImageHeader.src = profilePictureUrl;
+      activeConversationId = conversationId;  // Actualizar el ID de la conversación activa
+      loadConversation(conversationId);  // Cargar los mensajes de la conversación activa
+    }
+
+    // Cargar mensajes de una conversación
+    function loadConversation(conversationId) {
+      fetch(`/get_messages?conversation_id=${conversationId}`)
+        .then(response => response.json())
+        .then(messages => {
+          messagesContainer.innerHTML = '';  // Limpiar mensajes anteriores
+          messages.forEach(msg => {
+            addMessage("received", msg.content);  // Cargar mensajes recibidos
+          });
+        })
+        .catch(error => {
+          console.error('Error al cargar la conversación:', error);
+        });
+    }
+
+    // Añadir evento para enviar mensajes cuando presionas Enter en "new-message"
+    messagesInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
         const messageText = messagesInput.value.trim();
-
-        if (messageText !== '') {
-          addMessage('sent', messageText); // Añadir mensaje "enviado"
-
-          // Guardar mensaje usando el chat activo basado en el encabezado del chat
-          storeMessage('sent', messageText);
-
-          messagesInput.value = ''; // Limpiar input
+        console.log(activeConversationId);
+        if (messageText !== "" && activeConversationId) {
+          sendMessage(activeConversationId, messageText);  // Usar la conversación activa para enviar el mensaje
+        } else {
+          console.error('No hay una conversación activa o el mensaje está vacío.');
         }
       }
     });
 
-
-
-    // Función para añadir un chat-item a la lista de chats
-    function addChatItem(profilePicture, name, message, time) {
-      const chatItem = document.createElement('div');
-      chatItem.classList.add('chat-item');
-      chatItem.dataset.name = name; // Guardar el nombre como atributo
-      chatItem.innerHTML = `
-            <img alt="${name}" src="${profilePicture}" width="50" height="50" />
-            <div class="chat-info">
-                <div class="chat-name">${name}</div>
-                <div class="chat-message">${message}</div>
-            </div>
-            <div class="chat-time">${time}</div>
-        `;
-
-      // Añadir evento de clic derecho para mostrar el menú
-      chatItem.addEventListener('contextmenu', (event) => {
-        showMenu(event, chatItem); // Pasar el chatItem a la función showMenu
-      });
-
-      // Añadir evento de clic para seleccionar un chat
-      chatItem.addEventListener('click', () => {
-        selectChat(chatItem, profilePicture, name); // Pasar el chatItem seleccionado
-      });
-
-      // Añadir el nuevo chat-item a la lista
-      chatList.appendChild(chatItem);
-
-      // Inicializar chat vacío para ese contacto
-      if (!chats[name]) {
-        chats[name] = [];
-      }
+    // Función para enviar mensaje
+    function sendMessage(conversationId, messageText) {
+      fetch(`/enviar_mensaje`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          conversation_id: conversationId,  // Enviar el ID de la conversación activa
+          user_id: userId,  // ID del usuario actual
+          content: messageText,
+          media_type: null,
+          media: null
+        }),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al enviar el mensaje');
+          }
+          return response.json();
+        })
+        .then(() => {
+          addMessage("sent", messageText);  // Mostrar el mensaje enviado
+          messagesInput.value = "";  // Limpiar el campo de entrada
+        })
+        .catch(error => {
+          console.error('Error al enviar el mensaje:', error);
+        });
     }
 
     // Función para seleccionar un chat y cargar su información
-    function selectChat(chatItem, profilePicture, name) {
+    function selectChat(chatItem, profilePicture, name, conversationId) {
       // Remover clase 'active' del chat-item anterior
+      console.log('Chatitem :',chatItem, 'conversationid :',conversationId);
       if (activeChatItem) {
-        activeChatItem.classList.remove('active');
+        activeChatItem.classList.remove('active');  // Desactivar el chat anterior
       }
 
-      // Establecer nuevo chat-item como activo
+      // Establecer el nuevo chat como activo
       activeChatItem = chatItem;
-      chatItem.classList.add('active');
+      activeConversationId = conversationId;  // Actualizar el ID de la conversación activa
+      chatItem.classList.add('active');  // Resaltar el chat seleccionado
 
       // Actualizar el encabezado del chat con la nueva información del chat seleccionado
       chatNameHeader.textContent = name;
       chatImageHeader.src = profilePicture;
 
-      // Cargar los mensajes del chat seleccionado basándonos en el nombre
-      loadMessages(name);
+      // Cargar los mensajes de la conversación activa
+      loadConversation(conversationId);
     }
 
-
-    // Función para cargar los mensajes de un contacto
-    function loadMessages(contactName) {
-      messagesContainer.innerHTML = ''; // Limpiar mensajes actuales
-      const contactMessages = chats[contactName];
-      contactMessages.forEach(message => {
-        addMessage(message.type, message.text); // Cargar los mensajes guardados
-      });
-    }
-
-    // Función para añadir un mensaje en el chat
+    // Añadir un mensaje al chat
     function addMessage(type, text) {
       const messageHTML = `
-            <div class="chat-message ${type}">
-                <div class="message-content">${text}</div>
-                <div class="chat-time">${getCurrentTime()}</div>
-            </div>
-        `;
-      messagesContainer.innerHTML += messageHTML; // Añadir el nuevo mensaje al contenedor
-      messagesContainer.scrollTop = messagesContainer.scrollHeight; // Desplazar al final
-    }
-
-    // Función para guardar un mensaje en el diccionario de chats
-    function storeMessage(type, text) {
-      // Usar el nombre del chat activo en el encabezado como referencia
-      const contactName = chatNameHeader.textContent;
-
-      // Guardar el mensaje en el diccionario de chats bajo el contacto activo
-      if (contactName) {
-        chats[contactName].push({ type, text });
-      } else {
-        console.error("No hay un chat seleccionado.");
-      }
-    }
-
-
-    // Función para mostrar el menú en la posición del clic derecho
-    function showMenu(event, chatItem) {
-      event.preventDefault(); // Prevenir el menú contextual por defecto
-      hideMenu(); // Oculta cualquier otro menú antes de mostrar uno nuevo
-
-      activeChatItem = chatItem; // Guardar el chat-item activo
-      const mouseX = event.clientX; // Coordenadas X
-      const mouseY = event.clientY; // Coordenadas Y
-
-      // Posicionar el menú en la ubicación del clic
-      menu.style.top = `${mouseY}px`;
-      menu.style.left = `${mouseX}px`;
-      menu.style.display = 'block'; // Mostrar el menú
-    }
-
-    // Función para ocultar el menú
-    function hideMenu() {
-      menu.style.display = 'none'; // Ocultar el menú
-      activeChatItem = null; // Resetear el chat-item activo
+      <div class="chat-message ${type}">
+        <div class="message-content">${text}</div>
+        <div class="chat-time">${getCurrentTime()}</div>
+      </div>
+    `;
+      messagesContainer.innerHTML += messageHTML;
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;  // Desplazar hacia el final del chat
     }
 
     // Función para limpiar el chat
     function clearChat() {
-      chatNameHeader.textContent = ''; // Limpiar nombre del contacto
-      chatImageHeader.src = ''; // Limpiar imagen del contacto
-      messagesContainer.innerHTML = ''; // Limpiar mensajes
+      messagesContainer.innerHTML = '';  // Limpiar todos los mensajes
     }
 
-    // Cerrar el menú si se hace clic en cualquier parte fuera del chat-item o del menú
-    document.addEventListener('click', function (event) {
-      if (!menu.contains(event.target) && activeChatItem && !activeChatItem.contains(event.target)) {
-        hideMenu(); // Ocultar el menú
-      }
-    });
+    // Función para añadir un nuevo chat a la lista de chats
+    function addChatItem(profilePictureUrl, name, message, time) {
+      const chatItem = document.createElement("div");
+      chatItem.classList.add("chat-item");
+      chatItem.innerHTML = `
+      <img alt="${name}" src="${profilePictureUrl}" width="50" height="50" />
+      <div class="chat-info">
+        <div class="chat-name">${name}</div>
+        <div class="chat-message">${message}</div>
+      </div>
+      <div class="chat-time">${time}</div>
+    `;
+      chatItem.addEventListener("click", () => {
+        selectChat(chatItem, profilePictureUrl, name, activeConversationId);  // Establecer el chat activo al hacer clic
+      });
+
+      chatList.appendChild(chatItem);
+      chats[name] = [];  // Inicializar la conversación vacía
+    }
 
     // Obtener la hora actual
     function getCurrentTime() {
       const date = new Date();
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      return `${hours}:${minutes < 10 ? '0' + minutes : minutes}`; // Formato de hora
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
   });
 
-
 </script>
+
+
+
+
+
 {% endblock %}
